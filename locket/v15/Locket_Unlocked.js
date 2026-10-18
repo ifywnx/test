@@ -42,7 +42,7 @@
     var entries = data.entries;
 
     // ============================================================
-    // 1. GOLD + FEATURE GATES (giữ nguyên bản gốc + mở rộng an toàn)
+    // 1. GOLD + FEATURE GATES
     // ============================================================
     entries.feature_gates = safeMergeJSON(entries.feature_gates, {
       app_icon_picker: "enabled", camera_roll: "enabled", camera_theme: "enabled",
@@ -72,10 +72,10 @@
 
     // ============================================================
     // 2. VIDEO 60s - UPLOAD SAFE (FIX LỖI FAIL UPLOAD)
-    // Chiến lược: 60s + bitrate thấp (1.8 Mbps) → file ~13MB
-    // Không fake max_file_size, không fake timeout (server không đọc)
+    // Chiến lược: 60s + bitrate 1.8 Mbps → file ~13MB (an toàn)
+    // KHÔNG fake max_file_size_mb / upload_timeout (server không đọc)
+    // KHÔNG tạo media_upload / video_config (không tồn tại)
     // ============================================================
-    // Các key scalar top-level mà Locket client đọc
     Object.assign(entries, {
       camera_roll_preview_enabled: "true",
       camera_roll_video_enabled: "true",
@@ -92,7 +92,7 @@
       gold_max_duration: "60.0",
       goldMaxDuration: "60.0",
       max_video_length_seconds: "60.0",
-      video_quality_mbps: "1.8",          // giảm từ 0.9 → 1.8 cho 60s
+      video_quality_mbps: "1.8",
       video_sound_enabled: "true",
       microphone_enabled: "true",
       camera_microphone_enabled: "true",
@@ -105,7 +105,6 @@
       upload_thumbnail_image_size: "1020"
     });
 
-    // Merge vào camera - giữ config gốc server, chỉ override duration + bitrate
     entries.camera = safeMergeJSON(entries.camera, {
       gold_max_duration: 60.0,
       goldMaxDuration: 60.0,
@@ -123,7 +122,6 @@
       qualityMbps: 1.8
     });
 
-    // Merge vào camera_roll - giữ config gốc, chỉ override duration
     entries.camera_roll = safeMergeJSON(entries.camera_roll, {
       gold_max_duration: 60.0,
       goldMaxDuration: 60.0,
@@ -263,7 +261,6 @@
       rollcall_enabled: "true"
     });
 
-    // Streak config merge an toàn
     try {
       var streak = JSON.parse(entries.streak_config || "{}");
       streak.minimum_recovery_count = 0;
@@ -307,7 +304,6 @@
       journal_activity_bar_enabled: "true"
     });
 
-    // Journal settings merge an toàn
     try {
       var journal = JSON.parse(entries.journal_settings || "{}");
       Object.assign(journal, {
@@ -326,7 +322,7 @@
     } catch (e) {}
 
     // ============================================================
-    // 7. OVERLAY & CAPTIONS (giữ nguyên catalog đầy đủ)
+    // 7. OVERLAY & CAPTIONS
     // ============================================================
     entries.overlay_navigator_enabled = "true";
     entries.overlays_v2_config = JSON.stringify({ suggestions_enabled: true });
@@ -340,7 +336,7 @@
       "good_morning", "goodnight", "ootd", "miss_you", "custom", "phunu_2010", "halloween_2026"
     ]);
 
-    // ==== CAPTION CATALOG (đầy đủ, giữ nguyên từ file gốc) ====
+    // ==== CAPTION CATALOG (đầy đủ 100%) ====
     var existing = [];
     if (typeof entries.overlay_items === "string") {
       try { existing = JSON.parse(entries.overlay_items) || []; } catch (err) {}
@@ -418,4 +414,18 @@
           { overlay_id: "caption:graduation_day", source: "remote", caption: { background: { colors: ["#1A237E", "#283593"] }, icon: { data: "🎓", type: "emoji" }, max_lines: 1, text: "Happy Graduation Day!", localized_text: { en: "Happy Graduation Day!", vn: "Chúc mừng tốt nghiệp!" }, text_color: "#FFFFFFE6", type: "static_content" } },
           { overlay_id: "caption:shopping_time", source: "remote", caption: { background: { colors: ["#B3E5FC", "#FFFFFF"] }, icon: { data: "🛍️", type: "emoji" }, max_lines: 1, text: "Shopping Time!", localized_text: { en: "Shopping Time!", vn: "Giờ mua sắm!" }, text_color: "#000000E6", type: "static_content" } },
           { overlay_id: "caption:dinner_time", source: "remote", caption: { background: { colors: ["#FFCCBC", "#FF8A80"] }, icon: { data: "🍽️", type: "emoji" }, max_lines: 1, text: "Dinner Time!", localized_text: { en: "Dinner Time!", vn: "Giờ ăn tối!" }, text_color: "#FFFFFFE6", type: "static_content" } },
-          { overlay_id: "caption:chilling_time", source: "remote", caption: { background: { colors: ["#
+          { overlay_id: "caption:chilling_time", source: "remote", caption: { background: { colors: ["#E1BEE7", "#F8BBD0"] }, icon: { data: "🌴", type: "emoji" }, max_lines: 1, text: "Chilling Time!", localized_text: { en: "Chilling Time!", vn: "Giờ thư giãn!" }, text_color: "#FFFFFFE6", type: "static_content" } }
+        ]
+      },
+      {
+        section: "🌸 Độc lạ",
+        items: [
+          { overlay_id: "caption:xin_vinh_biet_cu", source: "remote", caption: { background: { colors: ["#232526", "#414345"] }, icon: { data: "🕯️", type: "emoji" }, max_lines: 1, text: "Xin vĩnh biệt cụ", text_color: "#FFFFFFE6", type: "static_content" } },
+          { overlay_id: "caption:chay_ngay_di", source: "remote", caption: { background: { colors: ["#D31027", "#EA384D"] }, icon: { data: "🏃💨", type: "emoji" }, max_lines: 1, text: "Chạy ngay đi", text_color: "#FFFFFFE6", type: "static_content" } },
+          { overlay_id: "caption:cu_tu_tu_khoai_se_nhu", source: "remote", caption: { background: { colors: ["#56AB2F", "#A8E063"] }, icon: { data: "🥔", type: "emoji" }, max_lines: 1, text: "Cứ từ từ khoai sẽ nhừ", text_color: "#000000E6", type: "static_content" } },
+          { overlay_id: "caption:kiem_tra_nhan_pham", source: "remote", caption: { background: { colors: ["#654EA3", "#EAAFC8"] }, icon: { data: "🎲", type: "emoji" }, max_lines: 1, text: "Kiểm tra nhân phẩm", text_color: "#FFFFFFE6", type: "static_content" } },
+          { overlay_id: "caption:doc_so_tai_khoan", source: "remote", caption: { background: { colors: ["#1E90FF", "#00D4FF"] }, icon: { data: "💳", type: "emoji" }, max_lines: 1, text: "đọc số tài khoản", text_color: "#FFFFFFE6", type: "static_content" } },
+          { overlay_id: "caption:ai_so_thi_di_ve", source: "remote", caption: { background: { colors: ["#B71C1C", "#FF5722"] }, icon: { data: "🏃", type: "emoji" }, max_lines: 1, text: "ai sợ thì đi về", text_color: "#FFFFFFE6", type: "static_content" } },
+          { overlay_id: "caption:con_cai_nit", source: "remote", caption: { background: { colors: ["#D7CCC8", "#8D6E63"] }, icon: { data: "🧶", type: "emoji" }, max_lines: 1, text: "còn cái nịt", text_color: "#FFFFFFE6", type: "static_content" } },
+          { overlay_id: "caption:canh_bao_co_hat", source: "remote", caption: { background: { colors: ["#9C27B0", "#E91E63"] }, icon: { data: "🎤", type: "emoji" }, max_lines: 1, text: "cảnh báo có hát", text_color: "#FFFFFFE6", type: "static_content" } },
+          { overlay_id: "caption:than_chua_ma_don", source: "remote", caption: { background:
