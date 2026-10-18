@@ -325,7 +325,7 @@
       if (missing.length > 0) {
         var existingGrp = null;
         for (var k = 0; k < existing.length; k++) {
-          if (existing[k].section === grp.section) {
+          if (existing[k] && existing[k].section === grp.section && Array.isArray(existing[k].items)) {
             existingGrp = existing[k];
             break;
           }
