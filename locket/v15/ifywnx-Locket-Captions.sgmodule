@@ -1,14 +1,15 @@
-#!name=IFYWNX V13 Ultimate - Locket Gold VIP
-#!desc=Mở khóa Locket Gold, Video 60s không lỗi upload, Widget Shin-chan, Captions khổng lồ, Anti-Telemetry
+#!name=IFYWNX Locket Ultimate
+#!desc=Locket Gold vĩnh viễn · Video 60s không lỗi upload · Shin-chan Widget · Captions khổng lồ · Anti-Telemetry
 #!category=Rewrite
 #!system=iOS
 
 [General]
 bypass-system = true
-skip-proxy = *.local
+skip-proxy = *.local, *.crashlytics.com
+tun-excluded-routes = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12
 
 [Script]
-# 1. Xóa header cache RevenueCat (ép server trả data mới)
+# 1. Xóa header cache RevenueCat (an toàn)
 deleteHeader = type=http-request, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(receipts|subscribers), script-path=https://raw.githubusercontent.com/ifywnx/locket-gold-ywnx/refs/heads/main/js/deleteHeader.js, timeout=60
 
 # 2. Fake receipt Gold vĩnh viễn
@@ -17,11 +18,8 @@ revenuecat = type=http-response, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(r
 # 3. Remote Config: 60s video + captions + widget
 locket_rc = type=http-response, pattern=^https:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/locket-4252a\/.+, script-path=https://raw.githubusercontent.com/ifywnx/locket-gold-ywnx/refs/heads/main/js/Locket_Unlocked.js, requires-body=true, max-size=-1, timeout=60
 
-# 4. (Tuỳ chọn) Fake Location — bỏ comment nếu muốn dùng
-# Locket_Spoof_Location = type=http-response, pattern=^https?:\/\/(api\.locketcamera\.com|maps\.googleapis\.com|.*locket.*)\/(weather|location|geocode|places), script-path=https://raw.githubusercontent.com/ifywnx/test/main/locket/v12/Locket_FakeLocation.js, requires-body=true, max-size=524288, timeout=60
-
 [Rule]
-# === ANTI-TELEMETRY (chặn tracking, tiết kiệm pin) ===
+# Anti-Telemetry
 DOMAIN-SUFFIX, mixpanel.com, REJECT
 DOMAIN-SUFFIX, amplitude.com, REJECT
 DOMAIN-SUFFIX, instabug.com, REJECT
