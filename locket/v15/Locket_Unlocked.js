@@ -343,7 +343,7 @@
       existing = [];
     }
 
-,
+    var catalog = [
       {
         section: "🎨 Decorative by ifywnx",
         items: [
