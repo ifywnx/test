@@ -1,34 +1,30 @@
-# IFYWNX — Luồng Caption độc lập (không dùng Sites)
+# IFYWNX V10.2 — Luồng Caption độc lập, không dùng Sites
 
-Bản thử V10.1: chỉ thêm dữ liệu Caption vào phản hồi Remote Config khi ứng dụng Locket thực sự gọi đúng endpoint. **Không cấp Gold, không sửa âm thanh, bộ lọc hay huy hiệu**. Chưa xác nhận danh sách Caption hiển thị trong ứng dụng.
+**Repository công khai:** `ifywnx/test`. Không thay đổi site hiện tại, cấu hình Gold V3 hoặc hồ sơ DNS đang sử dụng.
 
-## Các thành phần
+## Ba file trong luồng mới
 
-- [Locket_V10_Captions.js](./Locket_V10_Captions.js) — script công khai; Shadowrocket có thể tải từ GitHub Raw
-- Cấu hình Shadowrocket thử nghiệm: một `.conf` **hoặc** một `.sgmodule` tham chiếu URL Raw cố định
-- Không cần gọi Sites, không cần sửa `lib/private-assets.ts`, không cần thay DNS V3
+1. [ifywnx-V10-Independent.conf](./ifywnx-V10-Independent.conf) — cấu hình Shadowrocket độc lập, thay thế cấu hình V3 khi kiểm thử.
+2. [ifywnx-V10-Independent.sgmodule](./ifywnx-V10-Independent.sgmodule) — dùng thay cho Config nếu cần; **không bật cùng Config V10 hoặc module V3**.
+3. [Locket_V10_Captions.js](./Locket_V10_Captions.js) — script công khai; Config và Module sẽ tự tải bằng URL GitHub Raw, không cần chép JS thủ công.
 
-## Luồng cập nhật
+**DNS:** tiếp tục dùng DNS uBlock đã cài nếu cần. Không tạo hồ sơ DNS mới trong luồng thử để hạn chế thay đổi.
 
-Sửa **chính file JS** tại thư mục này trên GitHub (Edit → Commit), không đổi tên hoặc đường dẫn.
+## Sửa Caption trong tương lai
 
-`GitHub main → raw.githubusercontent.com/ifywnx/test/main/locket/v10/Locket_V10_Captions.js → Shadowrocket cập nhật URL Script → Locket gọi Firebase Remote Config → kiểm tra Script Log → kiểm tra Caption trên iPhone`
+Chỉnh file `Locket_V10_Captions.js` tại cùng đường dẫn trong repo, commit lên nhánh `main`, sau đó làm mới **URL Script** trong Shadowrocket. **Không phải deploy Sites**, không đổi Config/Module nếu URL không đổi. Khi gỡ cấu hình thử, bật lại V3.
 
-Không cần build hay deploy website. Raw có thể bị cache; phải yêu cầu Shadowrocket làm mới Script, rồi khởi động lại Locket.
+## Bản V10.2 khác V10.1
 
-## Cách phân biệt lỗi
+V10.1 chỉ chạy khi User-Agent chứa `Locket`. Firebase SDK có thể dùng User-Agent riêng, nên V10.2 kiểm tra URL phản hồi đúng dự án `locket-4252a` thay vì đòi User-Agent Locket. Đây là sửa lỗi giả định, **chưa được xác minh trên iPhone**.
 
-1. **Dấu ✓ xanh ở URL Script** = tải file thành công, chưa khẳng định file được chạy.
-2. **Nhật ký `[IFYWNX V10.1 CAPTIONS] script executed`** = Shadowrocket thực sự chạy JS.
-3. `skip: non-Locket or missing User-Agent` = script chạy nhưng bị chặn ở nhận diện UA.
-4. `skip: no valid entries in JSON` = response không có `entries` phù hợp.
-5. `groups=... added=...` = có xử lý JSON và bao nhiêu caption đã gộp.
-6. **Xuất hiện và gửi nhận được trong Locket** mới chứng minh tính năng chạy thật.
+## Kiểm tra từng bước
 
-Không gửi ảnh log chứa mã kích hoạt, Authorization header, URL tải có token hay dữ liệu cá nhân lên repository công khai.
+- Dấu ✓ ở URL Script = tải được JavaScript, **chưa phải đã chạy**.
+- Dòng `[IFYWNX V10.2 CAPTIONS] script executed` trong nhật ký Script = đã có thực thi.
+- Dòng `groups=... added=...` = đã thêm mục vào bản JSON tại thiết bị.
+- Caption xuất hiện, chọn được, gửi và hiện trên máy nhận = kiểm thử thành công.
 
-## Phân biệt với V3
+Nếu không có nhật ký hoặc giao diện không đổi, kiểm tra quy tắc URL, chứng chỉ giải mã HTTPS và thời điểm ứng dụng tải lại Remote Config. Đừng kết luận là Gold, Filter, AI, micro hoặc huy hiệu Gold đã được mở khóa chỉ vì dữ liệu cấu hình được thay đổi.
 
-Bản thử công khai không chép mã nguồn quyền đăng ký từ kho private. Nếu chọn Config V10 thay cho V3, các trạng thái Gold chỉ có trong bản V3 **có thể không còn xuất hiện**. Giữ V3 làm bản khôi phục.
-
-Nếu muốn bản nâng cấp có Caption và những thứ hoạt động trong V3, phải xác minh chức năng Caption trên ứng dụng rồi **hợp nhất phần tương thích** vào hệ thống phân phối do bạn quản lý. Không thể bảo đảm chức năng trả phí hoặc quyền từ máy chủ hoạt động bằng cách chỉnh Remote Config.
+**V10.2 không sửa entitlement/RevenueCat, đăng ký Gold, filter engine, audio upload hoặc dữ liệu hồ sơ phía máy chủ.** Không sao chép script Gold V3 từ kho riêng tư sang GitHub công khai. Không đăng mã kích hoạt, token, header cá nhân hoặc log chứa dữ liệu riêng lên repo.
