@@ -940,8 +940,6 @@
         ]
       }
     ];
-      }
-    ];
 
     // ==== MERGE CATALOG (không trùng lặp) ====
     catalog.forEach(function (grp) {
