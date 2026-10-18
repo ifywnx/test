@@ -344,6 +344,22 @@
     }
 
     var catalog = [
+            {
+        section: "🎨 General",
+        items: [
+          { overlay_id: "caption:standard", source: "local", caption: { type: "standard" } },
+          { overlay_id: "caption:review", source: "local", caption: { type: "review" } },
+          { overlay_id: "caption:music", source: "local", caption: { type: "music" } },
+          { overlay_id: "caption:location", source: "local", caption: { type: "location" } },
+          { overlay_id: "caption:weather", source: "local", caption: { type: "weather" } },
+          { overlay_id: "caption:time", source: "local", caption: { type: "time" } },
+          { overlay_id: "caption:streak", source: "local", caption: { type: "streak" } },
+          { overlay_id: "caption:star_sign", source: "local", caption: { type: "star_sign" } },
+          { overlay_id: "caption:poll", source: "local", caption: { type: "poll" } },
+          { overlay_id: "caption:color_palette", source: "local", caption: { type: "color_palette" } },
+          { overlay_id: "caption:locket_count", source: "local", caption: { type: "locket_count" } }
+        ]
+      },
       {
         section: "🎨 Decorative by ifywnx",
         items: [
