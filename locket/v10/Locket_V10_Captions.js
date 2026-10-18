@@ -1,16 +1,21 @@
-// IFYWNX V10.1 - Caption-only, independent GitHub distribution.
+// IFYWNX V10.2 - Caption-only, independent GitHub distribution.
 // Does not alter subscriptions, purchase data, Gold, microphone or filter processing.
 // Use with V10 Config OR Module, not simultaneously with V3 rewrite rules.
 (function(){
  var result={};
- function note(s){if(typeof console!=="undefined"&&typeof console.log==="function")console.log("[IFYWNX V10.1 CAPTIONS] "+s);}
+ function note(s){if(typeof console!=="undefined"&&typeof console.log==="function")console.log("[IFYWNX V10.2 CAPTIONS] "+s);}
  try{
   note("script executed; checking remote-config response");
   if(typeof $request==="undefined"||!$request||!$request.headers||
      typeof $response==="undefined"||!$response||typeof $response.body!=="string"){note("skip: missing request/response/body");$done(result);return;}
   var ua="";
   for(var k in $request.headers)if(Object.prototype.hasOwnProperty.call($request.headers,k)&&k.toLowerCase()==="user-agent"){ua=String($request.headers[k]||"");break;}
-  if(!/(?:^|[^a-z0-9])locket(?=$|[^a-z0-9])/i.test(ua)){note("skip: non-Locket or missing User-Agent");$done(result);return;}
+  var reqUrl=typeof $request.url==="string"?$request.url:"";
+  var matchesProject=/^https:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/locket-4252a\/.+/i.test(reqUrl);
+  var matchesUA=/(?:^|[^a-z0-9])locket(?=$|[^a-z0-9])/i.test(ua);
+  // Firebase SDK may send a Firebase User-Agent instead of "Locket".
+  // Prefer the exact project URL; retain UA as a fallback when URL is unavailable.
+  if((reqUrl&&!matchesProject)||(!reqUrl&&!matchesUA)){note("skip: request does not match Locket Remote Config");$done(result);return;}
   var data=JSON.parse($response.body);
   if(!data||typeof data!=="object"||Array.isArray(data)||!data.entries||
      typeof data.entries!=="object"||Array.isArray(data.entries)){note("skip: no valid entries in JSON");$done(result);return;}
