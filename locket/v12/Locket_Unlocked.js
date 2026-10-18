@@ -1,11 +1,10 @@
 // ============================================================
-// IFYWNX V12 ULTIMATE MAX - 60s Video + Audio + Filter Fix + Giant Caption Pack
+// IFYWNX V13 ULTIMATE MAX - Fix Video 60s, Upload 6MB, Anti-Tracking
 // ============================================================
 (function () {
   var rawBody = (typeof $response !== "undefined" && $response && typeof $response.body === "string") ? $response.body : "{}";
   var result = { body: rawBody };
 
-  // Thuật toán gộp thông minh: Giữ nguyên 100% Micro & Filter gốc của Server, chỉ tiêm thêm tính năng
   function safeMergeJSON(rawValue, overrides) {
     if (typeof rawValue === "undefined" || rawValue === null || rawValue === "") {
       return JSON.stringify(overrides);
@@ -41,7 +40,7 @@
     var entries = data.entries;
 
     // ============================================================
-    // 1. MỞ KHÓA TÍNH NĂNG CHÍNH VÀ CÁC CỜ BẢN QUYỀN
+    // 1. MỞ KHÓA TÍNH NĂNG CHÍNH VÀ CÁC CỜ BẢN QUYỀN + AI BETA
     // ============================================================
     entries.feature_gates = safeMergeJSON(entries.feature_gates, {
       app_icon_picker: "enabled", camera_roll: "enabled", camera_theme: "enabled",
@@ -49,7 +48,9 @@
       longer_video: "enabled", unlimited_friends: "enabled", priority_support: "enabled",
       profile_badge: "enabled", remove_ads: "enabled", streak_recovery: "enabled",
       video: "enabled", video_audio: "enabled", high_quality_video: "enabled",
-      hd_media_upload: "enabled", rollcall: "enabled", time_travel: "enabled"
+      hd_media_upload: "enabled", rollcall: "enabled", time_travel: "enabled",
+      group_chats: "enabled", magic_cutout: "enabled", ai_captions: "enabled",
+      lenses: "enabled", photo_booth: "enabled"
     });
 
     entries.upsell_features = safeMergeJSON(entries.upsell_features, {
@@ -59,17 +60,26 @@
     });
 
     // ============================================================
-    // 2. VIDEO 60 GIÂY, CÓ TIẾNG & CHỐNG NÉN (20Mbps, 200MB)
+    // 2. VIDEO 60 GIÂY, CÓ TIẾNG & FIX LỖI TIME-OUT (10S / 6MB)
     // ============================================================
+    entries.max_video_length_seconds = "60.0";
+    entries.gold_max_duration = "60.0";
+    entries.video_max_duration = "60.0";
+    entries.max_file_size_mb = "200";
+    entries.hd_video_max_file_size_mb = "200";
+    entries.upload_timeout_seconds = "120"; // Chống time-out mạng yếu
+
     var videoOverrides = {
       gold_max_duration: 60.0, goldMaxDuration: 60.0, max_duration: 60.0, max_video_length_seconds: 60.0,
       ultra_wide: true, ultraWide: true, volume_button: true, volumeButton: true,
       flash_button: true, telephoto: true, audio_enabled: true, record_audio: true,
       keep_original_audio: true, mute_by_default: false, unmute_by_default: true,
-      audio_bitrate: 256000, video_bitrate: 20000000, compression_quality: 1.0, max_file_size_mb: 200, hd_video: true
+      audio_bitrate: 256000, video_bitrate: 8000000, compression_quality: 0.9, max_file_size_mb: 200, hd_video: true
     };
     entries.camera = safeMergeJSON(entries.camera, videoOverrides);
     entries.camera_roll = safeMergeJSON(entries.camera_roll, videoOverrides);
+    entries.video_config = safeMergeJSON(entries.video_config, videoOverrides);
+    entries.media_upload = safeMergeJSON(entries.media_upload, videoOverrides);
 
     // ============================================================
     // 3. KHUNG WIDGET SHIN-CHAN CỦA ANH
@@ -83,36 +93,36 @@
     entries.widget_badge_enabled = "true";
 
     // ============================================================
-    // 4. CẤU HÌNH TỐI ƯU APP (VIEWS, UNLIMITED FRIENDS, RECALL MSG)
+    // 4. CẤU HÌNH TỐI ƯU APP & CHẶN TRACKING THEO DÕI
     // ============================================================
     Object.assign(entries, {
       captions_enabled: "true", overlay_navigator_enabled: "true", music_caption_enabled: "true",
       music_caption_song_preview_enabled: "true", profile_badge_visible: "true", custom_profile_pics: "true",
       max_friends_count: "999999", friend_limit_mode: "0", show_friend_limit_on_cam: "false",
       history_ads_mode: "off", unsend_message_enabled: "true", moment_views_enabled: "true",
-      moment_views_v2: "true", time_travel_rewind_v2_enabled: "true"
+      moment_views_v2: "true", time_travel_rewind_v2_enabled: "true",
+      enable_analytics: "false", crashlytics_enabled: "false", firebase_performance_enabled: "false",
+      disable_telemetry: "true", show_watermark: "false", watermark_enabled: "false"
     });
 
     // ============================================================
-    // 5. TRỌN BỘ KHO CAPTION SIÊU TO (GỘP THÔNG MINH, KHÔNG GHI ĐÈ)
+    // 5. TRỌN BỘ KHO CAPTION (TỐI ƯU TỐC ĐỘ GỘP)
     // ============================================================
     var existing = [];
-    if (entries.overlay_items) {
-      try {
-        var parsed = typeof entries.overlay_items === "string" ? JSON.parse(entries.overlay_items) : entries.overlay_items;
-        if (Array.isArray(parsed)) existing = parsed;
-      } catch (err) {}
+    if (typeof entries.overlay_items === "string") {
+      try { existing = JSON.parse(entries.overlay_items) || []; } catch (err) {}
+    } else if (Array.isArray(entries.overlay_items)) {
+      existing = entries.overlay_items;
     }
 
-    var merged = existing.slice();
-    var seen = Object.create(null);
-
-    for (var i = 0; i < existing.length; i++) {
-      if (!existing[i] || !Array.isArray(existing[i].items)) continue;
-      for (var j = 0; j < existing[i].items.length; j++) {
-        if (existing[i].items[j] && existing[i].items[j].overlay_id) seen[existing[i].items[j].overlay_id] = true;
+    var seen = new Set();
+    existing.forEach(function(grp) {
+      if (Array.isArray(grp.items)) {
+        grp.items.forEach(function(item) {
+          if (item && item.overlay_id) seen.add(item.overlay_id);
+        });
       }
-    }
+    });
 
     var catalog = [
       {
@@ -275,35 +285,29 @@
       }
     ];
 
-    for (var n = 0; n < catalog.length; n++) {
-      var grp = catalog[n];
-      var missing = [];
-      for (var m = 0; m < grp.items.length; m++) {
-        var cand = grp.items[m];
-        if (!seen[cand.overlay_id]) {
-          seen[cand.overlay_id] = true;
-          missing.push(cand);
+    catalog.forEach(function(grp) {
+      var missing = grp.items.filter(function(item) {
+        return !seen.has(item.overlay_id);
+      });
+      
+      if (missing.length > 0) {
+        var existingGrp = null;
+        for (var k = 0; k < existing.length; k++) {
+          if (existing[k].section === grp.section) {
+            existingGrp = existing[k];
+            break;
+          }
+        }
+        
+        if (existingGrp) {
+          existingGrp.items = existingGrp.items.concat(missing);
+        } else {
+          existing.push({ section: grp.section, items: missing });
         }
       }
-      if (!missing.length) continue;
+    });
 
-      var pos = -1;
-      for (var t = 0; t < merged.length; t++) {
-        if (merged[t] && merged[t].section === grp.section && Array.isArray(merged[t].items)) {
-          pos = t;
-          break;
-        }
-      }
-      if (pos < 0) {
-        merged.push({ section: grp.section, items: missing });
-      } else {
-        var copy = Object.assign({}, merged[pos]);
-        copy.items = merged[pos].items.concat(missing);
-        merged[pos] = copy;
-      }
-    }
-
-    entries.overlay_items = JSON.stringify(merged);
+    entries.overlay_items = JSON.stringify(existing);
     result = { body: JSON.stringify(data) };
 
   } catch (error) {
