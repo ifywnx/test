@@ -41,6 +41,9 @@
 
     var entries = data.entries;
 
+    // Restore V3 self-only recipient option; verify recipients before sending.
+    entries.send_to_self_only_mode = "always_enabled";
+
     // ============================================================
     // 1. GOLD + FEATURE GATES
     // ============================================================
