@@ -1,5 +1,5 @@
 // ============================================================
-// IFYWNX V13 ULTIMATE MAX - Fix Video 60s, Upload 6MB, Anti-Tracking
+// IFYWNX V14 ULTIMATE - Video 60s, Captions, Shin-chan & VIP Popup
 // ============================================================
 (function () {
   var rawBody = (typeof $response !== "undefined" && $response && typeof $response.body === "string") ? $response.body : "{}";
@@ -67,7 +67,7 @@
     entries.video_max_duration = "60.0";
     entries.max_file_size_mb = "200";
     entries.hd_video_max_file_size_mb = "200";
-    entries.upload_timeout_seconds = "120"; // Chống time-out mạng yếu
+    entries.upload_timeout_seconds = "120";
 
     var videoOverrides = {
       gold_max_duration: 60.0, goldMaxDuration: 60.0, max_duration: 60.0, max_video_length_seconds: 60.0,
@@ -82,7 +82,7 @@
     entries.media_upload = safeMergeJSON(entries.media_upload, videoOverrides);
 
     // ============================================================
-    // 3. KHUNG WIDGET SHIN-CHAN CỦA ANH
+    // 3. KHUNG WIDGET SHIN-CHAN & POPUP CHÀO MỪNG IFYWNX
     // ============================================================
     entries.widget_frame_event = JSON.stringify({
       uid: "shin_chan_custom_anh",
@@ -91,6 +91,25 @@
     });
     entries.android_widget_frame_event_enabled = "true";
     entries.widget_badge_enabled = "true";
+
+    entries.feature_discovery_popup_config = JSON.stringify({
+      tag: "LOCKET GOLD",
+      tag_gradient: true,
+      tag_style: "gold_gradient",
+      title: "Lên Locket Gold rồi đó 😎",
+      feature_set: [
+        {
+          title: "Chào mừng đến với ifywnx ✨",
+          body: "Chúc bạn chia sẻ thật nhiều khoảnh khắc đẹp 💛",
+          imageURL: "https://ifywnx-install.agilechub512.chatgpt.site/images/locket-welcome-ifywnx-v5.png"
+        }
+      ],
+      primary_button_title: "Xong",
+      campaign: "ifywnx_welcome_v5",
+      start_at: "2020-01-01T00:00:00",
+      end_at: "2099-12-31T23:59:59",
+      use_local_time_zone: true
+    });
 
     // ============================================================
     // 4. CẤU HÌNH TỐI ƯU APP & CHẶN TRACKING THEO DÕI
