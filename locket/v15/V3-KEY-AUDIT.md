@@ -2,7 +2,7 @@
 
 Đã phục hồi `send_to_self_only_mode: "always_enabled"`. Chưa kiểm chứng UI hoặc quyền riêng tư trên iPhone.
 
-41 tên khóa V3 không xuất hiện trong V15; không đồng nghĩa từng tính năng bị mất. Chưa tự thêm các khóa này. Đây là so sánh tên khóa, không phải kiểm tra toàn bộ giá trị hay hành vi.
+Đã bổ sung 39/41 khóa dưới đây vào V15 chính. Hai khóa storage_bucket và storage_bucket_video giữ nguyên từ máy chủ. Chưa xác nhận hành vi thực tế trên iPhone.
 
 - `live_photos`
 - `friend_limit_geo_override`

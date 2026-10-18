@@ -1,3 +1,7 @@
-# V15 — bản nháp
+# V15 chính
 
-Lưu nội dung người dùng gửi ngày 18/10/2026. Script Remote Config bị cắt tại dòng 421, caption `chilling_time`, chuỗi màu `#` chưa đóng. Chưa tạo config/module vì file này không qua kiểm tra cú pháp. Script Locket_ifywnx.js là bản mapping người dùng gửi kèm, đã kiểm tra cú pháp; chưa kiểm thử thiết bị. Giữ nguyên V12 và bản nháp V13.
+Đã bổ sung 39 khóa V3; giữ nguyên hai khóa storage bucket do máy chủ trả về. Video 30 giây / 0,9 Mbps.
+
+Cập nhật màu nền và màu chữ cho 450 caption theo catalog người dùng cung cấp. Giữ 11 caption động, gồm vote và bảng màu. Giữ màu Hồi chiều trời mưa. Màu được cập nhật cả khi ID đã có trong phản hồi.
+
+Dùng ifywnx-Locket-Captions.sgmodule trong thư mục này; tắt module V15 thử nghiệm trước. Chưa xác nhận hoạt động trên iPhone.
