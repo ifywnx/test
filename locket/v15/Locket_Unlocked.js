@@ -1,6 +1,6 @@
 // ============================================================
-// IFYWNX V15 ULTIMATE - 60s Video + Upload Safe + Full Config
-// Dựa trên file gốc @ifywnx, giữ 100% key, chỉ nâng 60s
+// IFYWNX V15 - Video 30s / 0.9 Mbps
+// Đưa thời lượng và bitrate video về mức V3; cần kiểm thử gửi/nhận trên thiết bị.
 // ============================================================
 (function () {
   var rawBody = (typeof $response !== "undefined" && $response && typeof $response.body === "string") ? $response.body : "{}";
@@ -74,8 +74,8 @@
     });
 
     // ============================================================
-    // 2. VIDEO 60s - UPLOAD SAFE (FIX LỖI FAIL UPLOAD)
-    // 60s + bitrate 1.8 Mbps → file ~13MB (an toàn)
+    // 2. VIDEO 30s - CẤU HÌNH KIỂM THỬ
+    // 30s + bitrate 0.9 Mbps; chưa xác nhận upload trên thiết bị.
     // KHÔNG fake max_file_size_mb / upload_timeout
     // KHÔNG tạo media_upload / video_config
     // ============================================================
@@ -85,17 +85,17 @@
       camera_roll_video_upload_enabled: "true",
       internal_camera_roll_video_upload_enabled: "true",
       longer_camera_roll_videos_enabled: "true",
-      camera_roll_video_max_duration: "60.0",
-      camera_roll_max_duration: "60.0",
-      camera_roll_duration: "60.0",
-      max_video_duration: "60.0",
-      video_max_duration: "60.0",
-      video_trim_max_duration: "60.0",
-      trim_max_duration: "60.0",
-      gold_max_duration: "60.0",
-      goldMaxDuration: "60.0",
-      max_video_length_seconds: "60.0",
-      video_quality_mbps: "1.8",
+      camera_roll_video_max_duration: "30.0",
+      camera_roll_max_duration: "30.0",
+      camera_roll_duration: "30.0",
+      max_video_duration: "30.0",
+      video_max_duration: "30.0",
+      video_trim_max_duration: "30.0",
+      trim_max_duration: "30.0",
+      gold_max_duration: "30.0",
+      goldMaxDuration: "30.0",
+      max_video_length_seconds: "30.0",
+      video_quality_mbps: "0.9",
       video_sound_enabled: "true",
       microphone_enabled: "true",
       camera_microphone_enabled: "true",
@@ -109,22 +109,22 @@
     });
 
     entries.camera = safeMergeJSON(entries.camera, {
-      gold_max_duration: 60.0, goldMaxDuration: 60.0,
-      max_duration: 60.0, maxDuration: 60.0,
+      gold_max_duration: 30.0, goldMaxDuration: 30.0,
+      max_duration: 30.0, maxDuration: 30.0,
       ultra_wide: true, ultraWide: true,
       volume_button: true, volumeButton: true,
       flash_button: true, telephoto: true,
       srgb: true, lanczos: true,
-      quality_mbps: 1.8, qualityMbps: 1.8
+      quality_mbps: 0.9, qualityMbps: 0.9
     });
 
     entries.camera_roll = safeMergeJSON(entries.camera_roll, {
-      gold_max_duration: 60.0, goldMaxDuration: 60.0,
-      video_max_duration: 60.0, videoMaxDuration: 60.0,
-      max_duration: 60.0, maxDuration: 60.0,
-      trim_max_duration: 60.0, trimMaxDuration: 60.0,
-      camera_roll_max_duration: 60.0,
-      quality_mbps: 1.8, qualityMbps: 1.8,
+      gold_max_duration: 30.0, goldMaxDuration: 30.0,
+      video_max_duration: 30.0, videoMaxDuration: 30.0,
+      max_duration: 30.0, maxDuration: 30.0,
+      trim_max_duration: 30.0, trimMaxDuration: 30.0,
+      camera_roll_max_duration: 30.0,
+      quality_mbps: 0.9, qualityMbps: 0.9,
       flash_button: true
     });
 

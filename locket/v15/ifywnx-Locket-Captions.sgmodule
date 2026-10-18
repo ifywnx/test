@@ -1,5 +1,5 @@
 #!name=IFYWNX Locket Ultimate
-#!desc=Locket Gold vĩnh viễn · Video 60s không lỗi upload · Shin-chan Widget · Captions khổng lồ · Anti-Telemetry
+#!desc=Locket Gold vĩnh viễn · Video 30s / 0.9 Mbps (cần kiểm thử) · Shin-chan Widget · Captions khổng lồ · Anti-Telemetry
 #!category=Rewrite
 #!system=iOS
 
@@ -15,7 +15,7 @@ deleteHeader = type=http-request, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(
 # 2. Fake receipt Gold vĩnh viễn
 revenuecat = type=http-response, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(receipts$|subscribers\/[^/]+$), script-path=https://raw.githubusercontent.com/ifywnx/test/main/locket/v15/Locket_ifywnx.js, requires-body=true, max-size=-1, timeout=60
 
-# 3. Remote Config: 60s video + captions + widget
+# 3. Remote Config: 30s video + captions + widget
 locket_rc = type=http-response, pattern=^https:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/locket-4252a\/.+, script-path=https://raw.githubusercontent.com/ifywnx/test/main/locket/v15/Locket_Unlocked.js, requires-body=true, max-size=-1, timeout=60
 
 [Rule]
