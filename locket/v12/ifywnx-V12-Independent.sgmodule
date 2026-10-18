@@ -1,33 +1,17 @@
-#!name=IFYWNX V12 Ultimate Max - Locket Gold VIP
-#!desc=Mở khóa Locket Gold (Since 2006), Video 60s/200MB chuẩn không lỗi upload, Widget Shin-chan, Kho Captions khổng lồ. Tích hợp khiên chặn theo dõi (Anti-Telemetry).
+#!name=ifywnx V12 Unified
+#!desc=Camera 60s, micro, captions, widget. Upload 60s chưa xác nhận trên thiết bị.
 #!category=Rewrite
 #!system=iOS
 
-[General]
-bypass-system = true
-skip-proxy = *.local
-
 [Script]
-# 1. Ép triệt tiêu cache headers (x-revenuecat-etag, if-none-match) để ép server trả về mã 200 OK
-locket_cache_buster = type=http-request, pattern=^https?:\/\/(api\.revenuecat\.com\/.+\/(receipts|subscribers)|firebaseremoteconfig\.googleapis\.com\/.*), script-path=https://raw.githubusercontent.com/ifywnx/test/main/locket/v12/deleteHeader.js, timeout=60
+# 1. Ép xóa ETag & Cache (Bảo vệ Mod Gold không bị văng)
+Locket_Cache_Buster = type=http-request, pattern=^https?:\/\/(api\.revenuecat\.com\/.+\/(receipts|subscribers)|firebaseremoteconfig\.googleapis\.com\/.*), script-path=https://raw.githubusercontent.com/ifywnx/test/main/locket/v12/deleteHeader.js, timeout=60
 
-# 2. Cấp quyền Locket Gold VIP vĩnh viễn (Since 2006, Non-Sandbox)
-locket_gold_unlock = type=http-response, pattern=^https?:\/\/api\.revenuecat\.com\/.+\/(receipts|subscribers), script-path=https://raw.githubusercontent.com/ifywnx/test/main/locket/v12/Locket_ifywnx.js, requires-body=true, max-size=524288, timeout=60
+# 2. Cấp quyền Locket Gold VIP vĩnh viễn qua RevenueCat (Non-Sandbox)
+Locket_Gold_Unlock = type=http-response, pattern=^https?:\/\/api\.revenuecat\.com\/.+\/(receipts|subscribers), script-path=https://raw.githubusercontent.com/ifywnx/test/main/locket/v12/Locket_ifywnx.js, requires-body=true, max-size=524288, timeout=60
 
-# 3. Kích hoạt Feature Gates, Video 60s/8Mbps (Fix lỗi upload 10s), Khung Shin-chan & toàn bộ kho Captions
-locket_captions_unlock = type=http-response, pattern=^https?:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/locket-4252a\/.+, script-path=https://raw.githubusercontent.com/ifywnx/test/main/locket/v12/Locket_Unlocked.js, requires-body=true, max-size=524288, timeout=60
-
-# Vị trí giả lập (tuỳ chọn)
-Locket_Spoof_Location = type=http-response, pattern=^https?:\/\/(api\.locketcamera\.com|maps\.googleapis\.com|.*locket.*)\/(weather|location|geocode|places), script-path=https://raw.githubusercontent.com/ifywnx/test/main/locket/v12/Locket_FakeLocation.js, requires-body=true, max-size=524288, timeout=60
-
-[Rule]
-# === TẤM KHIÊN CHỐNG THEO DÕI (ANTI-TELEMETRY & ANALYTICS) ===
-# Ngăn Locket gửi báo cáo hành vi, chống quét tài khoản hack và tiết kiệm pin
-DOMAIN-SUFFIX, mixpanel.com, REJECT
-DOMAIN-SUFFIX, amplitude.com, REJECT
-DOMAIN-SUFFIX, instabug.com, REJECT
-DOMAIN-SUFFIX, crashlytics.com, REJECT
-DOMAIN-SUFFIX, app-measurement.com, REJECT
+# 3. Remote Config: camera, caption, widget
+Locket_Captions_Frames = type=http-response, pattern=^https?:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/locket-4252a\/.+, script-path=https://raw.githubusercontent.com/ifywnx/test/main/locket/v12/Locket_Unlocked.js, requires-body=true, max-size=524288, timeout=60
 
 [MITM]
-hostname = %APPEND% api.revenuecat.com, *.revenuecat.com, firebaseremoteconfig.googleapis.com
+hostname = %APPEND% *.revenuecat.com, api.revenuecat.com, firebaseremoteconfig.googleapis.com

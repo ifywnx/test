@@ -1,5 +1,5 @@
 // ============================================================
-// IFYWNX V14 ULTIMATE - Video 60s, Captions, Shin-chan & VIP Popup
+// IFYWNX V12 Unified - 60s capture; upload requires device verification
 // ============================================================
 (function () {
   var rawBody = (typeof $response !== "undefined" && $response && typeof $response.body === "string") ? $response.body : "{}";
@@ -35,7 +35,7 @@
     if ((reqUrl && !matchesProject) || (!reqUrl && !matchesUA)) return $done(result);
 
     var data = JSON.parse($response.body);
-    if (!data || typeof data !== "object" || Array.isArray(data) || !data.entries) return $done(result);
+    if (!data || typeof data !== "object" || Array.isArray(data) || !data.entries || typeof data.entries !== "object" || Array.isArray(data.entries)) return $done(result);
 
     var entries = data.entries;
 
@@ -62,24 +62,36 @@
     // ============================================================
     // 2. VIDEO 60 GIÂY, CÓ TIẾNG & FIX LỖI TIME-OUT (10S / 6MB)
     // ============================================================
-    entries.max_video_length_seconds = "60.0";
-    entries.gold_max_duration = "60.0";
-    entries.video_max_duration = "60.0";
-    entries.max_file_size_mb = "200";
-    entries.hd_video_max_file_size_mb = "200";
-    entries.upload_timeout_seconds = "120";
-
-    var videoOverrides = {
-      gold_max_duration: 60.0, goldMaxDuration: 60.0, max_duration: 60.0, max_video_length_seconds: 60.0,
-      ultra_wide: true, ultraWide: true, volume_button: true, volumeButton: true,
-      flash_button: true, telephoto: true, audio_enabled: true, record_audio: true,
-      keep_original_audio: true, mute_by_default: false, unmute_by_default: true,
-      audio_bitrate: 256000, video_bitrate: 8000000, compression_quality: 0.9, max_file_size_mb: 200, hd_video: true
-    };
-    entries.camera = safeMergeJSON(entries.camera, videoOverrides);
-    entries.camera_roll = safeMergeJSON(entries.camera_roll, videoOverrides);
-    entries.video_config = safeMergeJSON(entries.video_config, videoOverrides);
-    entries.media_upload = safeMergeJSON(entries.media_upload, videoOverrides);
+    // Unified client capture settings; do not invent server size/time limits.
+    Object.assign(entries, {
+  "camera_roll_preview_enabled": "true",
+  "camera_roll_video_enabled": "true",
+  "camera_roll_video_upload_enabled": "true",
+  "internal_camera_roll_video_upload_enabled": "true",
+  "longer_camera_roll_videos_enabled": "true",
+  "camera_roll_video_max_duration": "60.0",
+  "camera_roll_max_duration": "60.0",
+  "camera_roll_duration": "60.0",
+  "max_video_duration": "60.0",
+  "video_max_duration": "60.0",
+  "video_trim_max_duration": "60.0",
+  "trim_max_duration": "60.0",
+  "video_sound_enabled": "true",
+  "microphone_enabled": "true",
+  "camera_microphone_enabled": "true",
+  "zoom_enabled": "true",
+  "max_video_length_seconds": "60.0",
+  "gold_max_duration": "60.0",
+  "video_quality_mbps": "0.9"
+});
+    entries.camera = safeMergeJSON(entries.camera, {"gold_max_duration":60,"goldMaxDuration":60,"max_duration":60,"maxDuration":60,"ultra_wide":true,"ultraWide":true,"volume_button":true,"volumeButton":true,"flash_button":true,"telephoto":true,"srgb":true,"lanczos":true,"quality_mbps":0.9,"qualityMbps":0.9,"audio_enabled":true,"record_audio":true,"keep_original_audio":true});
+    entries.camera_roll = safeMergeJSON(entries.camera_roll, {"gold_max_duration":60,"goldMaxDuration":60,"video_max_duration":60,"videoMaxDuration":60,"max_duration":60,"maxDuration":60,"trim_max_duration":60,"trimMaxDuration":60,"camera_roll_max_duration":60,"quality_mbps":0.9,"qualityMbps":0.9,"flash_button":true,"audio_enabled":true,"record_audio":true,"keep_original_audio":true});
+    // Preserve existing server filter IDs/resources. V3 list is a fallback only.
+    if (entries.camera_filter_config == null || entries.camera_filter_config === "") {
+      entries.camera_filter_config = "{\"allows_custom_filters\":true,\"show_filter_button\":true,\"sheet_enabled\":true,\"open_sheet_immediately\":true,\"sheet_filters\":[{\"title\":{\"en\":\"Goofy\"},\"filter_ids\":[\"okay_wig\",\"influencer\",\"looks_maxxing\",\"toothless\",\"bye_brows\"]},{\"title\":{\"en\":\"Looks\"},\"filter_ids\":[\"bowling_ball\",\"blonde_bleached\",\"beard\",\"bob_cut\",\"buns\",\"tatted\",\"mohawk\",\"braces\",\"bye_brows\"]},{\"title\":{\"en\":\"Celebrate\"},\"filter_ids\":[\"slimed\",\"princess\",\"disco_lights\",\"cash_money\",\"happy_birthday\"]},{\"title\":{\"en\":\"Cute\"},\"filter_ids\":[\"cutesy\",\"sticker_face\",\"flower_crown\",\"love_bug\"]},{\"title\":{\"en\":\"Costumes\"},\"filter_ids\":[\"wedding\",\"cowboy_cowgirl\",\"giraffe\",\"clown\"]},{\"title\":{\"en\":\"Holidays\"},\"filter_ids\":[\"easter_bunney_cutout\",\"easter_chick_cutout\",\"bearded\",\"leprechaun\",\"lucky_face\",\"sweet_hearts\",\"elf_cutout\",\"santa_cutout\",\"frosty\"]}],\"picker_filters\":[\"okay_wig\",\"influencer\",\"looks_maxxing\",\"toothless\",\"bye_brows\",\"bowling_ball\",\"blonde_bleached\",\"beard\",\"bob_cut\",\"buns\",\"tatted\",\"mohawk\",\"braces\",\"slimed\",\"princess\",\"disco_lights\",\"cash_money\",\"happy_birthday\",\"cutesy\",\"sticker_face\",\"flower_crown\",\"love_bug\",\"wedding\",\"cowboy_cowgirl\",\"giraffe\",\"clown\",\"easter_bunney_cutout\",\"easter_chick_cutout\",\"bearded\",\"leprechaun\",\"lucky_face\",\"sweet_hearts\",\"elf_cutout\",\"santa_cutout\",\"frosty\"]}";
+    } else {
+      entries.camera_filter_config = safeMergeJSON(entries.camera_filter_config, {show_filter_button:true, sheet_enabled:true});
+    }
 
     // ============================================================
     // 3. KHUNG WIDGET SHIN-CHAN & POPUP CHÀO MỪNG IFYWNX
@@ -135,8 +147,9 @@
     }
 
     var seen = new Set();
+    if (!Array.isArray(existing)) existing = [];
     existing.forEach(function(grp) {
-      if (Array.isArray(grp.items)) {
+      if (grp && Array.isArray(grp.items)) {
         grp.items.forEach(function(item) {
           if (item && item.overlay_id) seen.add(item.overlay_id);
         });
