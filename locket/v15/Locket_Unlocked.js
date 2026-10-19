@@ -1,7 +1,7 @@
-// IFYWNX V15 - FULL ICON / SEMANTIC & EDITORIAL COLOR / VERTICAL LOCKET PREVIEW
+// An V15 - FULL ICON / SEMANTIC & EDITORIAL COLOR / VERTICAL LOCKET PREVIEW
 // Only caption catalog / overlay grouping logic changed; other config preserved.
 // ============================================================
-// IFYWNX V15 - Video 30s / 0.9 Mbps
+// An V15 - Video 30s / 0.9 Mbps
 // Đưa thời lượng và bitrate video về mức V3; cần kiểm thử gửi/nhận trên thiết bị.
 // ============================================================
 (function () {
@@ -230,7 +230,7 @@
     }
 
     // ============================================================
-    // 3. WIDGET SHIN-CHAN + POPUP IFYWNX
+    // 3. WIDGET SHIN-CHAN + POPUP AN
     // ============================================================
     entries.widget_frame_event = JSON.stringify({
       uid: "shin_chan_custom_anh",
@@ -245,12 +245,12 @@
       tag: "LOCKET GOLD", tag_gradient: true, tag_style: "gold_gradient",
       title: "Lên Locket Gold rồi đó 😎",
       feature_set: [{
-        title: "Chào mừng đến với ifywnx ✨",
+        title: "Chào mừng đến với An ✨",
         body: "Chúc bạn chia sẻ thật nhiều khoảnh khắc đẹp 💛",
-        imageURL: "https://ifywnx-install.agilechub512.chatgpt.site/images/locket-welcome-ifywnx-v5.png"
+        imageURL: "https://raw.githubusercontent.com/ifywnx/test/main/locket/v15/assets/locket-gold-an.png"
       }],
       primary_button_title: "Xong",
-      campaign: "ifywnx_welcome_v5",
+      campaign: "an_welcome_v1",
       start_at: "2020-01-01T00:00:00", end_at: "2099-12-31T23:59:59",
       use_local_time_zone: true
     });
@@ -436,7 +436,7 @@
     }
 
 
-    // IFYWNX: bỏ các caption nhắc tên thương hiệu cũ trong nhóm by ifywnx.
+    // An: bỏ các caption nhắc tên thương hiệu cũ trong nhóm by ifywnx.
     // Nếu server còn gửi các overlay cũ, cũng loại bỏ trước khi gộp catalog.
     var retiredBrandCaptionIds = new Set(["caption:ifywnx_brand_beta_cinemas", "caption:ifywnx_brand_bhd_star", "caption:ifywnx_brand_bobapop", "caption:ifywnx_brand_bong_bieng", "caption:ifywnx_brand_cgv", "caption:ifywnx_brand_chagee", "caption:ifywnx_brand_cheese_coffee", "caption:ifywnx_brand_cinestar", "caption:ifywnx_brand_cong_ca_phe", "caption:ifywnx_brand_ding_tea", "caption:ifywnx_brand_galaxy_cinema", "caption:ifywnx_brand_life4cuts", "caption:ifywnx_brand_lotte_cinema", "caption:ifywnx_brand_man_man", "caption:ifywnx_brand_maycha", "caption:ifywnx_brand_phe_la", "caption:ifywnx_brand_photoism", "caption:ifywnx_brand_starbucks", "caption:ifywnx_brand_the_alley", "caption:ifywnx_brand_vien_vien", "caption:ifywnx_place_bach_hoa_xanh", "caption:ifywnx_place_cinema_time", "caption:ifywnx_place_circle_k_time", "caption:ifywnx_place_familymart_time", "caption:ifywnx_place_gongcha_time", "caption:ifywnx_place_gs25_time", "caption:ifywnx_place_highlands_time", "caption:ifywnx_place_jollibee_time", "caption:ifywnx_place_katinat_time", "caption:ifywnx_place_kfc_time", "caption:ifywnx_place_koi_the_time", "caption:ifywnx_place_lotteria_time", "caption:ifywnx_place_ministop_time", "caption:ifywnx_place_mixue_time", "caption:ifywnx_place_ngo_gia_time", "caption:ifywnx_place_phuc_long_time", "caption:ifywnx_place_seven_eleven_time", "caption:ifywnx_place_tam_hao_time", "caption:ifywnx_place_the_coffee_house", "caption:ifywnx_place_tocotoco_time", "caption:ifywnx_place_winmart_time", "caption:mixue_time"]);
     if (Array.isArray(existing)) {
@@ -2469,7 +2469,7 @@
     ]
   },
   {
-    "section": "🎨 Decorative by ifywnx",
+    "section": "🎨 Decorative by An",
     "items": [
       {
         "overlay_id": "caption:ifywnx",
@@ -2483,7 +2483,7 @@
             ]
           },
           "max_lines": 1,
-          "text": "💻 ifywnx",
+          "text": "💻 An",
           "text_color": "#183153",
           "type": "static_content"
         }
@@ -3389,7 +3389,7 @@
     ]
   },
   {
-    "section": "📸 Locket mỗi ngày & ifywnx",
+    "section": "📸 Locket mỗi ngày & An",
     "items": [
       {
         "overlay_id": "caption:mot_chiec_anh_co_aura",
@@ -14857,6 +14857,15 @@
     });
     existing = sortedGroups;
 
+    // Migrate visible branding in captions already present in the response.
+    existing.forEach(function (group) {
+      if (!group) return;
+      if (typeof group.section === "string") group.section = group.section.replace(/ifywnx/gi, "An");
+      if (!Array.isArray(group.items)) return;
+      group.items.forEach(function (item) {
+        if (item && item.caption && item.caption.text === "💻 ifywnx") item.caption.text = "💻 An";
+      });
+    });
     entries.overlay_items = JSON.stringify(existing);
 
     result = { body: JSON.stringify(data) };
