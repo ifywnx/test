@@ -1,5 +1,5 @@
 #!name=IFYWNX Locket Ultimate
-#!desc=Locket Gold vĩnh viễn · Video 30s / 0.9 Mbps (cần kiểm thử) · Shin-chan Widget · 499 caption tùy chỉnh + 11 caption động · Anti-Telemetry
+#!desc=Full Icon / Semantic Studio · 716 mục caption · Video 30s / 0.9 Mbps · Cần kiểm thử trên thiết bị
 #!category=Rewrite
 #!system=iOS
 
@@ -16,7 +16,7 @@ deleteHeader = type=http-request, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(
 revenuecat = type=http-response, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(receipts$|subscribers\/[^/]+$), script-path=https://raw.githubusercontent.com/ifywnx/test/main/locket/v15/Locket_ifywnx.js, requires-body=true, max-size=-1, timeout=60
 
 # 3. Remote Config: 30s video + captions + widget
-locket_rc = type=http-response, pattern=^https:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/locket-4252a\/.+, script-path=https://raw.githubusercontent.com/ifywnx/test/11a3de85fb30b51482b3d3cf99716074c60eec4c/locket/v15/Locket_Unlocked.js, requires-body=true, max-size=-1, timeout=60
+locket_rc = type=http-response, pattern=^https:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/locket-4252a\/.+, script-path=https://raw.githubusercontent.com/ifywnx/test/55f16eb22b6c450b8abb86afd989c53f88c42156/locket/v15/Locket_Unlocked.js, requires-body=true, max-size=-1, timeout=60
 
 [Rule]
 # Anti-Telemetry
