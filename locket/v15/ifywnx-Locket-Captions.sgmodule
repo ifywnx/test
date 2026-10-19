@@ -1,4 +1,4 @@
-#!name=IFYWNX Locket Ultimate
+#!name=An · Locket
 #!desc=Full Icon / Semantic Studio · 716 mục caption · Video 30s / 0.9 Mbps · Cần kiểm thử trên thiết bị
 #!category=Rewrite
 #!system=iOS
@@ -16,7 +16,7 @@ deleteHeader = type=http-request, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(
 revenuecat = type=http-response, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(receipts$|subscribers\/[^/]+$), script-path=https://raw.githubusercontent.com/ifywnx/test/main/locket/v15/Locket_ifywnx.js, requires-body=true, max-size=-1, timeout=60
 
 # 3. Remote Config: 30s video + captions + widget
-locket_rc = type=http-response, pattern=^https:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/locket-4252a\/.+, script-path=https://raw.githubusercontent.com/ifywnx/test/55f16eb22b6c450b8abb86afd989c53f88c42156/locket/v15/Locket_Unlocked.js, requires-body=true, max-size=-1, timeout=60
+locket_rc = type=http-response, pattern=^https:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/locket-4252a\/.+, script-path=https://raw.githubusercontent.com/ifywnx/test/647933489e00f36f32a4e42c71bd1a3ef84e4f0a/locket/v15/Locket_Unlocked.js, requires-body=true, max-size=-1, timeout=60
 
 [Rule]
 # Anti-Telemetry
