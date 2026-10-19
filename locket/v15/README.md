@@ -1,9 +1,5 @@
-# V15 chính
+# V15 chính — Full Icon / Semantic Studio
 
-Đã bổ sung 39 khóa V3; giữ nguyên hai khóa storage bucket do máy chủ trả về. Video 30 giây / 0,9 Mbps.
+Cập nhật từ IFYWNX_V15_FULL_ICON_Semantic_Studio.md. Kiểm tra dữ liệu mẫu: 716 mục caption trong 22 nhóm; giữ vote và bảng màu. Các cấu hình ngoài overlay_items giống bản trước, gồm video 30 giây / 0,9 Mbps.
 
-Cập nhật màu nền và màu chữ cho 499 caption theo file ifywnx_V15_full_499_locket_doc_muot.md người dùng cung cấp. Giữ 11 caption động, gồm vote và bảng màu. Giữ màu Hồi chiều trời mưa. Màu được cập nhật cả khi ID đã có trong phản hồi.
-
-Dùng ifywnx-Locket-Captions.sgmodule trong thư mục này; tắt module V15 thử nghiệm trước. Chưa xác nhận hoạt động trên iPhone.
-
-Tổng cộng 510 mục: 499 caption tùy chỉnh và 11 caption động; 34 nhóm. Nhóm Ủng hộ An đứng đầu.
+Cập nhật module ifywnx-Locket-Captions.sgmodule rồi làm mới URL Script. Không bật đồng thời bản thử nghiệm. Đã kiểm tra cú pháp, ID không trùng và chạy lặp không nhân đôi caption; chưa kiểm thử trên iPhone.
